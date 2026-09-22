@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kalkulator Rute Laundry — Dijkstra</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Laundry Bersih Jaya &middot; dibangun dengan Python + Flask</div>
+    <h1>Kalkulator rute jemput-antar</h1>
+    <p class="lead">Menghitung rute terpendek dari laundry ke titik pelanggan memakai Algoritma Dijkstra (diproses di server Python), sekaligus estimasi total biaya termasuk biaya tambahan jemput-antar.</p>
+  </header>
+
+  <div class="card">
+    <h2>Pilih titik tujuan</h2>
+    <div class="field">
+      <label for="dest">Titik pelanggan</label>
+      <select id="dest">
+        {% for kode, nama in tujuan_list %}
+        <option value="{{ kode }}">{{ kode }} — {{ nama }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <button id="calc">Hitung rute optimal</button>
+
+    <div class="result" id="result">
+      <div class="route-line" id="routeLine"></div>
+      <div class="stat-grid">
+        <div class="stat"><div class="num" id="distStat">–</div><div class="lbl">Jarak (km)</div></div>
+        <div class="stat"><div class="num" id="costStat">–</div><div class="lbl">Total biaya</div></div>
+        <div class="stat"><div class="num" id="zoneStat">–</div><div class="lbl">Zona jarak</div></div>
+      </div>
+      <div class="breakdown">
+        <div><span>Biaya jarak (Rp2.000/km)</span><span id="bDist">–</span></div>
+        <div><span>Biaya tambahan jemput-antar</span><span id="bZone">–</span></div>
+        <div class="total"><span>Total</span><span id="bTotal">–</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Ringkasan seluruh titik</h2>
+    <table id="allTable">
+      <thead><tr><th>Tujuan</th><th>Rute optimal</th><th>Jarak</th><th>Total biaya</th></tr></thead>
+      <tbody><tr><td colspan="4">Memuat data dari server...</td></tr></tbody>
+    </table>
+    <div class="zone-note">Zona biaya tambahan: 0–1,5 km = Rp3.000 &middot; 1,5–3 km = Rp5.000 &middot; &gt;3 km = Rp7.000</div>
+  </div>
+
+  <footer>Perhitungan Dijkstra dijalankan di server Flask (Python) — endpoint <code>/hitung/&lt;tujuan&gt;</code> dan <code>/ringkasan</code></footer>
+</div>
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
